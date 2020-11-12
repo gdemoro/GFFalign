@@ -1,21 +1,29 @@
 #!/usr/bin/env python3
 
-import imp
-import unittest
+from subprocess import Popen, PIPE
 
-from os.path import expanduser, join
 
-# use expanduser to locate its home dir and join bin and candy module paths
-#candy_module_path =  join(expanduser("~"), "bin", "candy")
-#print(candy_module_path)
 
-# load the module without .py extension
-gffalign = imp.load_source("gffalign")
-print(gffalign)
+def test_entrypoint():
+    test_status = Popen(["gffalign", "--help"], stdout=PIPE)
+    (output, err) = test_status.communicate()
+    exit_code = test_status.wait()
+    assert exit_code == 0
 
-#class CandyTestCase(unittest.TestCase):
 
- #   def testCandy(self):
- #       candyOutput = candy.candy()
+def test_output():
+    test_status = Popen(["gffalign", "-m", "genome_aln.tab", "query.gff", "target.gff"], stdout=PIPE)
+    (output, err) = test_status.communicate()
+    exit_code = test_status.wait()
+    output_gff = ""
 
-  #      assert candyOutput == "candy"
+    with open("output.gff") as outgff:
+        for line in outgff:
+            output_gff+=line
+    if output_gff == output.decode('UTF-8'):
+        print("The test was successful")
+    else:
+        print("The output is different than expected. Please check")
+
+test_entrypoint()
+test_output()
