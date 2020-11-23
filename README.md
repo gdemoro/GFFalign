@@ -1,4 +1,4 @@
-# GFFutil
+# GFFalign
 
 This script was written as part of the EOSC-Life Demonstrator 4 project.
 
@@ -27,3 +27,5 @@ scaffold7	prediction	gene	967081	968380	.	963768	.	ID=scaffold7;New_annotation='
 scaffold21	prediction	gene	1066913	1069210	.	1062549	.	ID=scaffold21;New_annotation='ID=gene518;Dbxref=GeneID:105888784;Name=LOC105888784;gbkey=Gene;gene=LOC105888784;gene_biotype=protein_coding';Note=new
 scaffold27	prediction	gene	2109210	2112138	.	2106448	.	ID=scaffold27;New_annotation='ID=gene19467;Dbxref=GeneID:105906405;Name=tshz2;gbkey=Gene;gene=tshz2;gene_biotype=protein_coding';Note=new
 ```
+
+It's also possible to run the simple script test_gffalign.py
