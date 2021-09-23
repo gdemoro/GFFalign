@@ -99,6 +99,8 @@ class GeneComp:
 
 
 def diff_gene(query_genes, target_genes, dstart, dend, qstart, qend, query_db, args):
+    # Sometimes a line is duplicated. This list is used to remove duplicates.
+    genelist=[]
     # are the  two genes the same?
     if args.extract:
         extract = args.extract
@@ -118,22 +120,19 @@ def diff_gene(query_genes, target_genes, dstart, dend, qstart, qend, query_db, a
         for ccgene in query_genes:
             algene = GeneComp(ccgene, qstart, qend, otgene, dstart, dend, extract, tol, gattr)
             if "new" in args.verbosity or "all" in args.verbosity:
-                if algene.is_different():
-                    algene_out = algene.is_different()
-                    algene_name = algene_out.split("\t")[0]
-                    algene_start = int(algene_out.split("\t")[3])
-                    algene_end = int(algene_out.split("\t")[4])
-                    if not list(query_db.region(region=(algene_name, algene_start, algene_end), completely_within=False)):
-                        if args.output:
-                            algene.output=args.output
-                            algene.fout()
-                        else:
-                            print(algene.is_different())
-                            if args.extract:
-                                algene.extract_fasta()
+                if algene.is_different() and algene.is_different() not in genelist:
+                    genelist.append(algene.is_different())
+                    if args.output:
+                        algene.output=args.output
+                        algene.fout()
+                    else:
+                        print(algene.is_different())
+                        if args.extract:
+                            algene.extract_fasta()
 
             if "shorter" in args.verbosity or "all" in args.verbosity:
-                if algene.is_shorter():
+                genelist.append(algene.is_shorter())
+                if algene.is_shorter() and algene.is_short() not in genelist:
                     if args.output:
                         algene.output=args.output
                         algene.fout()
@@ -142,7 +141,8 @@ def diff_gene(query_genes, target_genes, dstart, dend, qstart, qend, query_db, a
                         if args.extract:
                             algene.extract_fasta()
             if "longer" in args.verbosity or "all" in args.verbosity:
-                if algene.is_longer():
+                genelist.append(algene.is_longer())
+                if algene.is_longer() and algene.is_longer not in genelist:
                     if args.output:
                         algene.output=args.output
                         algene.fout()
@@ -151,7 +151,8 @@ def diff_gene(query_genes, target_genes, dstart, dend, qstart, qend, query_db, a
                         if args.extract:
                             algene.extract_fasta()
             if "offset" in args.verbosity or "all" in args.verbosity:
-                if algene.is_offset():
+                genelist.append(algene.is_offset())
+                if algene.is_offset() and algene.is_offset not in genelist:
                     if args.output:
                         algene.output=args.output
                         algene.fout()
@@ -160,7 +161,8 @@ def diff_gene(query_genes, target_genes, dstart, dend, qstart, qend, query_db, a
                         if args.extract:
                             algene.extract_fasta()
             if "confirmed" in args.verbosity:
-                if algene.is_equal():
+                genelist.append(algene.is_equal)
+                if algene.is_equal() and algene.is_equal() not in genelist:
                     if args.output:
                         algene.output=args.output
                         algene.fout()
